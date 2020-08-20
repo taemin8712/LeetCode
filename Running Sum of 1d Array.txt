@@ -1,0 +1,18 @@
+
+//let nums = [1, 2, 3, 4]
+//let nums = [1, 1, 1, 1]
+let nums = [3,1,2,10,1]
+var resultArray = [Int]()
+
+func runningSum(_ nums: [Int]) -> [Int] {
+    var tempsum = 0
+    for i in 0..<nums.count {
+        
+        resultArray.append((tempsum + nums[i]))
+        tempsum += nums[i]
+    }
+    print("resultArray : \(resultArray)")
+    return resultArray
+}
+runningSum(nums)
+
