@@ -30,6 +30,8 @@
 * 최선 : O(n)
 * 최악 : O(n^2) --> 자료의 순서가 역순일때
 
+
+
 <img src="https://gmlwjd9405.github.io/images/algorithm-insertion-sort/sort-time-complexity.png" alt="" />
 
 
@@ -39,7 +41,78 @@
 
 </br>
 </p>
-* Shell
+
+
+
 * Merge
+* Shell
+>분할 정복 알고리즘. (divide & conquer)
+ <ol>
+ 	<li>
+ 		Divde : 입력된 배열을 2개의 부분 배열로 분할
+ 	</li>
+ 	<li>
+ 		Conquer : 2개롤 나눈 배열을 정렬한다. 크기가 작지 않다면 부분 배열을 다시 분할 하여 분할 정복 방법을 적용한다. (순환 호출 == 재귀 호출 )
+ 	</li>
+ 	<li>
+ 		 COmbine : 정렬된 부분 배열을 다시 하나의 배열로 합병
+ 		 ** 추가적인 리스트가 필요.
+ 	</li>
+ </ol>
+ 
+** Code in Swift **
+// _ array : unsorted Array
+func mergeSort<T: Comparable>(_ array: [T]) -> [T] {
+  guard array.count > 1 else { return array }
+  // 중간 인자 생성
+  let middleIndex = array.count / 2
+  //0.. 중간인자까지 sort 
+  let leftArray = mergeSort(Array(array[0..<middleIndex]))
+  //중간.. 끝까지 sort
+  let rightArray = mergeSort(Array(array[middleIndex..<array.count]))
+//	왼쪽,오른쪽 정렬된 배열 리턴
+  return merge(leftArray, rightArray)
+}
+//
+func merge<T: Comparable>(_ left: [T], _ right: [T]) -> [T] {
+  var leftIndex = 0
+  var rightIndex = 0
+
+  var orderedArray: [T] = []
+
+	// 각 인자가 배열 숫자보다 작을떄까지만 
+  while leftIndex < left.count && rightIndex < right.count {
+
+    let leftElement = left[leftIndex]
+    let rightElement = right[rightIndex]
+
+    if leftElement < rightElement {
+      orderedArray.append(leftElement)
+      leftIndex += 1
+    } else if leftElement > rightElement {
+      orderedArray.append(rightElement)
+      rightIndex += 1
+    } else {
+      orderedArray.append(leftElement)
+      leftIndex += 1
+      orderedArray.append(rightElement)
+      rightIndex += 1
+    }
+  }
+
+  while leftIndex < left.count {
+    orderedArray.append(left[leftIndex])
+    leftIndex += 1
+  }
+
+  while rightIndex < right.count {
+    orderedArray.append(right[rightIndex])
+    rightIndex += 1
+  }
+
+  return orderedArray
+}
+
+
 * Quick
 * Heap 
