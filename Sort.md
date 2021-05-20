@@ -205,3 +205,5 @@ https://gmlwjd9405.github.io/images/data-structure-heap/maxheap-insertion.png
     private func parent(_ index: Int) -> T { return items[getParentIndex(index)]! }
     private func leftChild(_ index: Int) -> T { return items[getLeftChildIndex(index)]! }
     private func rightChild(_ index: Int) -> T { return items[getRightChildIndex(index)]! }
+
+    
