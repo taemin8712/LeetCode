@@ -116,3 +116,92 @@ func merge<T: Comparable>(_ left: [T], _ right: [T]) -> [T] {
 
 * Quick
 * Heap 
+> 완전 이진 트리의 일종으로 Priority Queue 위한 자료구조
+> min/max를 쉽게 추출할 수 있다.
+ <ol>
+  <li> desending 최대 힙 / asendging 최소 힙 구성</li>
+  <li> 이진 트리 형태 구성 -> 하나씩 요소를 꺼내  배열 뒤부터 정렬 
+  </li>
+  <li>  삭제되는 요소은 값이 감소되는 순서대로 정렬</li>
+  </ol>
+
+  1. max heap insert
+    1. 새로운 요소는 마지막 노드에 이어 삽입
+    2. 새로운 노드를 부모 노드들과 교환해서 힙의 조건 충족
+
+https://gmlwjd9405.github.io/images/data-structure-heap/maxheap-insertion.png
+<출처: https://gmlwjd9405.github.io/ >
+
+  2. max Heap Delete
+    1. 루투 로드에서 삭제 
+    2. 삭제된 노드에서 힙의 <b>마지막 노드</b>를 가져온다.
+    3. 힙을 재구성한다.
+    https://gmlwjd9405.github.io/images/data-structure-heap/maxheap-delete.png
+
+    <출처: https://gmlwjd9405.github.io/ >
+
+
+    <table>
+<th>
+** 장점**
+<ol>
+<li>1. Time complexity 좋은편</li>
+<li>2. 힙 정렬이 가자 유용한 경우는 <b>가장 큰 값 몇개만을 필요로할때</b> 전체 정렬에는 쏘쏘</li>
+</li>
+</ol
+</th>
+</table>
+<ol>
+ ** Time Complexity 
+  <li>Heap Tree height -> lg(n) 하나의 요소를 insert/delete 재정비 시간 lg(n)</li>
+  <li>요소의 개수 n</li> 
+  <li>T(n) --> O(N*logN)</li>
+</ol>
+
+
+    class Heap<T: Comparable> {
+    
+    var capacity: Int = 10
+    var count: Int = 0
+    var isEmpty: Bool { return count == 0 }
+    
+    var items: [T?]
+    
+    init() {
+        items = Array(repeating: nil, count: capacity)
+      }
+    }
+
+    private func ensureExtraCapacity() {
+    if capacity == count {
+        items.append(contentsOf: Array(repeating: nil, count: capacity))
+        capacity = capacity * 2
+    }
+    }
+    public func add(_ item: T) {
+        ensureExtraCapacity()
+        items[count] = item
+        count+=1
+        heapifyUp()
+    }
+
+    private func heapifyUp() {
+        if isEmpty { return }
+        var index = count - 1
+        while hasParent(index) && parent(index) > items[index]! {
+            items.swapAt(index, getParentIndex(index))
+            index = getParentIndex(index)
+        }
+    }
+
+    private func getParentIndex(_ index: Int) -> Int { return (index - 1) / 2 }
+    private func getLeftChildIndex(_ index: Int) -> Int { return 2 * index + 1 }
+    private func getRightChildIndex(_ index: Int) -> Int { return 2 * index + 2 }
+
+    private func hasParent(_ index: Int) -> Bool { return getParentIndex(index) >= 0 }
+    private func hasLeftChild(_ index: Int) -> Bool { return getLeftChildIndex(index) < count }
+    private func hasRightChild(_ index: Int) -> Bool { return getRightChildIndex(index) < count }
+
+    private func parent(_ index: Int) -> T { return items[getParentIndex(index)]! }
+    private func leftChild(_ index: Int) -> T { return items[getLeftChildIndex(index)]! }
+    private func rightChild(_ index: Int) -> T { return items[getRightChildIndex(index)]! }
